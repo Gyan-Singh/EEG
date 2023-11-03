@@ -11,6 +11,7 @@ from natsort import natsorted
 import wandb
 import numpy as np
 import cv2
+from tensorflow.keras.optimizers.legacy import Adam
 from lstm_kmean.model import TripleNet
 import math
 # from eval_utils import get_inception_score
@@ -88,7 +89,7 @@ if __name__ == '__main__':
 	# print
 
 	triplenet = TripleNet(n_classes=n_classes)
-	opt     = tf.keras.optimizers.Adam(learning_rate=3e-4)
+	opt = Adam(learning_rate=3e-4)
 	triplenet_ckpt    = tf.train.Checkpoint(step=tf.Variable(1), model=triplenet, optimizer=opt)
 	triplenet_ckptman = tf.train.CheckpointManager(triplenet_ckpt, directory='lstm_kmean/experiments/best_ckpt', max_to_keep=5000)
 	triplenet_ckpt.restore(triplenet_ckptman.latest_checkpoint)
@@ -128,8 +129,8 @@ if __name__ == '__main__':
 	lr = 3e-4
 	with mirrored_strategy.scope():
 		model        = DCGAN()
-		model_gopt   = tf.keras.optimizers.Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
-		model_copt   = tf.keras.optimizers.Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
+		model_gopt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
+		model_copt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
 		ckpt         = tf.train.Checkpoint(step=tf.Variable(1), model=model, gopt=model_gopt, copt=model_copt)
 		ckpt_manager = tf.train.CheckpointManager(ckpt, directory='experiments/ckpt', max_to_keep=300)
 		ckpt.restore(ckpt_manager.latest_checkpoint).expect_partial()
