@@ -13,6 +13,7 @@ import numpy as np
 import cv2
 from lstm_kmean.model import TripleNet
 import math
+from tensorflow.keras.optimizers.legacy import Adam
 # from eval_utils import get_inception_score
 tf.random.set_seed(45)
 np.random.seed(45)
@@ -38,7 +39,7 @@ for path in image_paths:
 
 os.environ['TF_XLA_FLAGS'] = '--tf_xla_enable_xla_devices'
 os.environ["CUDA_DEVICE_ORDER"]= "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]= '1'
+os.environ["CUDA_VISIBLE_DEVICES"]= '0'
 
 if __name__ == '__main__':
 
@@ -71,7 +72,7 @@ if __name__ == '__main__':
 	print(X.shape, Y.shape, I.shape)
 
 	gpus = tf.config.list_physical_devices('GPU')
-	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:1'], 
+	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:0'], 
 		cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
 	n_gpus = mirrored_strategy.num_replicas_in_sync
 	# print(n_gpus)
@@ -85,7 +86,7 @@ if __name__ == '__main__':
 	# print
 
 	triplenet = TripleNet(n_classes=n_classes)
-	opt     = tf.keras.optimizers.Adam(learning_rate=3e-4)
+	opt     = Adam(learning_rate=3e-4)
 	triplenet_ckpt    = tf.train.Checkpoint(step=tf.Variable(1), model=triplenet, optimizer=opt)
 	triplenet_ckptman = tf.train.CheckpointManager(triplenet_ckpt, directory='lstm_kmean/experiments/best_ckpt', max_to_keep=5000)
 	triplenet_ckpt.restore(triplenet_ckptman.latest_checkpoint)
@@ -126,8 +127,8 @@ if __name__ == '__main__':
 	lr = 3e-4
 	with mirrored_strategy.scope():
 		model        = DCGAN()
-		model_gopt   = tf.keras.optimizers.Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
-		model_copt   = tf.keras.optimizers.Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
+		model_gopt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
+		model_copt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
 		ckpt         = tf.train.Checkpoint(step=tf.Variable(1), model=model, gopt=model_gopt, copt=model_copt)
 		ckpt_manager = tf.train.CheckpointManager(ckpt, directory='experiments/best_ckpt', max_to_keep=300)
 		ckpt.restore(ckpt_manager.latest_checkpoint).expect_partial()
