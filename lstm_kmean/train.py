@@ -17,7 +17,7 @@ from sklearn.cluster import KMeans
 style.use('seaborn')
 
 os.environ["CUDA_DEVICE_ORDER"]= "PCI_BUS_ID"
-os.environ["CUDA_VISIBLE_DEVICES"]= '1'
+os.environ["CUDA_VISIBLE_DEVICES"]= '0'
 
 np.random.seed(45)
 tf.random.set_seed(45)
