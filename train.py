@@ -27,8 +27,11 @@ for idx, item in enumerate(natsorted(glob('data/images/train/*')), start=0):
 	idxtocls[idx] = clsname
 
 print(clsname)
+print("\n")
 print(clstoidx)
+print("\n")
 print(idxtocls)
+print("\n")
 
 image_paths = natsorted(glob('data/images/train/*/*'))
 imgdict     = {}
