@@ -26,6 +26,10 @@ for idx, item in enumerate(natsorted(glob('data/images/train/*')), start=0):
 	clstoidx[clsname] = idx
 	idxtocls[idx] = clsname
 
+print(clsname)
+print(clstoidx)
+print(idxtocls)
+
 image_paths = natsorted(glob('data/images/train/*/*'))
 imgdict     = {}
 for path in image_paths:
@@ -34,6 +38,8 @@ for path in image_paths:
 		imgdict[key].append(path)
 	else:
 		imgdict[key] = [path]
+
+print(imgdict)
 
 # wandb.init(project='DCGAN_DiffAug_EDDisc_imagenet_128', entity="prajwal_15")
 
@@ -75,7 +81,7 @@ if __name__ == '__main__':
 	print(X.shape, Y.shape, I.shape)
 
 	gpus = tf.config.list_physical_devices('GPU')
-	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:1'], 
+	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:0'], 
 		cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
 	n_gpus = mirrored_strategy.num_replicas_in_sync
 	# print(n_gpus)
@@ -137,7 +143,7 @@ if __name__ == '__main__':
 
 	# print(ckpt.step.numpy())
 	START         = int(ckpt.step.numpy()) // len(train_batch) + 1
-	EPOCHS        = 300#670#66
+	EPOCHS        = 1#670#66
 	model_freq    = 355#178#355#178#200#40
 	t_visfreq     = 355#178#355#178#200#1500#40
 	latent        = tf.random.uniform(shape=(16, latent_dim), minval=-0.2, maxval=0.2)
