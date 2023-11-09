@@ -25,12 +25,7 @@ for idx, item in enumerate(natsorted(glob('data/images/train/*')), start=0):
 	clsname = os.path.basename(item)
 	clstoidx[clsname] = idx
 	idxtocls[idx] = clsname
-
-print(clsname)
-print("\n")
-print(clstoidx)
-print("\n")
-print(idxtocls)
+	print(clsname)
 print("\n")
 
 image_paths = natsorted(glob('data/images/train/*/*'))
@@ -72,14 +67,24 @@ if __name__ == '__main__':
 	train_path = []
 	for X, Y in zip(train_X, train_Y):
 		train_path.append(np.random.choice(imgdict[idxtocls[np.argmax(Y)]], size=(1,) ,replace=True)[0])
+	print("train_path--{train_path}")
+	print("\n")
 
 	test_path = []
 	for X, Y in zip(test_X, test_Y):
 		test_path.append(np.random.choice(imgdict[idxtocls[np.argmax(Y)]], size=(1,) ,replace=True)[0])
+	print("test_path--{test_path}")
 
 	train_batch = load_complete_data(train_X, train_Y, train_path, batch_size=batch_size)
 	test_batch  = load_complete_data(test_X, test_Y, test_path, batch_size=test_batch_size)
+	print("train_batch--{train_batch}")
+	print(type(train_batch))
+	print("\n")
+	print("test_batch--{test_batch}")
+	print("\n")
+	
 	X, Y, I      = next(iter(train_batch))
+	print("X--{X}  ,Y--{Y}  ,Z--{Z}")
 	latent_label = Y[:16]
 	print(X.shape, Y.shape, I.shape)
 
