@@ -67,35 +67,18 @@ if __name__ == '__main__':
 	train_path = []
 	for X, Y in zip(train_X, train_Y):
 		train_path.append(np.random.choice(imgdict[idxtocls[np.argmax(Y)]], size=(1,) ,replace=True)[0])
-	print("train_path")
-	print(train_path)
-	
-	print("\n")
+
 
 	test_path = []
 	for X, Y in zip(test_X, test_Y):
 		test_path.append(np.random.choice(imgdict[idxtocls[np.argmax(Y)]], size=(1,) ,replace=True)[0])
-	print("test_path")
-	print(test_path)
+
 
 	train_batch = load_complete_data(train_X, train_Y, train_path, batch_size=batch_size)
 	test_batch  = load_complete_data(test_X, test_Y, test_path, batch_size=test_batch_size)
-	print("train_batch")
-	print(train_batch)
-	print(type(train_batch))
-	print("\n")
-	print("test_batch")
-	print(test_batch)
-	print("\n")
+
 	
 	X, Y, I      = next(iter(train_batch))
-	print("X  ,Y--{Y}  ,Z--{Z}")
-	print(X)
-	print("\n")
-	print(Y)
-	print("\n")
-	print(I)
-	print("\n")
 	latent_label = Y[:16]
 	print(X.shape, Y.shape, I.shape)
 

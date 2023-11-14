@@ -40,13 +40,18 @@ def preprocess_data(X, Y, P, resolution=128):
 	I = tf.image.decode_jpeg(tf.io.read_file(P), channels=3)
 	I = tf.image.resize(I, (resolution, resolution))
 	I = (tf.cast( I, dtype=tf.float32 ) - 127.5) / 127.5
+	print("x")
+	print(X)
+	print("Y")
+	print(Y)
+	print("I")
+	print(I)
 
 	return X, Y, I
 
 def load_complete_data(X, Y, P, batch_size=16, dataset_type='train'):	
 	if dataset_type == 'train':
 		dataset = tf.data.Dataset.from_tensor_slices((X, Y, P)).map(preprocess_data).shuffle(buffer_size=2*batch_size).batch(batch_size, drop_remainder=False).prefetch(tf.data.experimental.AUTOTUNE)
-		print(dataset)
 	else:
 		dataset = tf.data.Dataset.from_tensor_slices((X, Y, P)).map(preprocess_data).batch(batch_size, drop_remainder=False).prefetch(tf.data.experimental.AUTOTUNE)
 	return dataset
