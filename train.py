@@ -25,8 +25,6 @@ for idx, item in enumerate(natsorted(glob('data/images/train/*')), start=0):
 	clsname = os.path.basename(item)
 	clstoidx[clsname] = idx
 	idxtocls[idx] = clsname
-	print(clsname)
-print("\n")
 
 image_paths = natsorted(glob('data/images/train/*/*'))
 imgdict     = {}
@@ -97,6 +95,8 @@ if __name__ == '__main__':
 	# print
 
 	triplenet = TripleNet(n_classes=n_classes)
+	print("triplenet")
+	print(triplenet)
 	opt = Adam(learning_rate=3e-4)
 	triplenet_ckpt    = tf.train.Checkpoint(step=tf.Variable(1), model=triplenet, optimizer=opt)
 	triplenet_ckptman = tf.train.CheckpointManager(triplenet_ckpt, directory='lstm_kmean/experiments/best_ckpt', max_to_keep=5000)
@@ -116,12 +116,11 @@ if __name__ == '__main__':
 		Y = Y.numpy()[0]
 		if Y not in test_eeg_cls:
 			test_eeg_cls[Y] = [np.squeeze(triplenet(E, training=False)[1].numpy())]
-			print("test_eeg_cls")
-			print(test_eeg_cls)
 		else:
 			test_eeg_cls[Y].append(np.squeeze(triplenet(E, training=False)[1].numpy()))
-			print("test_eeg_cls")
-			print(test_eeg_cls)
+
+	print("test_eeg_cls")
+	print(test_eeg_cls)
 	
 	for _ in range(n_classes):
 		test_eeg_cls[_] = np.array(test_eeg_cls[_])
@@ -149,7 +148,7 @@ if __name__ == '__main__':
 
 	# print(ckpt.step.numpy())
 	START         = int(ckpt.step.numpy()) // len(train_batch) + 1
-	EPOCHS        = 2#670#66
+	EPOCHS        = 1#670#66
 	model_freq    = 355#178#355#178#200#40
 	t_visfreq     = 355#178#355#178#200#1500#40
 	latent        = tf.random.uniform(shape=(16, latent_dim), minval=-0.2, maxval=0.2)
@@ -188,14 +187,11 @@ if __name__ == '__main__':
 			tq.set_description('E: {}, gl: {:0.3f}, cl: {:0.3f}'.format(epoch, t_gloss.result(), t_closs.result()))
 			# break
 
-			print(X.shape, latent_label.shape)
-
 		with open('experiments/log.txt', 'a') as file:
 			file.write('Epoch: {0}\tT_gloss: {1}\tT_closs: {2}\n'.format(epoch, t_gloss.result(), t_closs.result()))
 		print('Epoch: {0}\tT_gloss: {1}\tT_closs: {2}'.format(epoch, t_gloss.result(), t_closs.result()))
 
 
-		# if (epoch%10)==0:
 		save_path = 'experiments/inception/{}'.format(epoch)
 
 		if not os.path.isdir(save_path):
@@ -204,7 +200,6 @@ if __name__ == '__main__':
 		for cl in range(n_classes):
 			test_noise  = np.random.uniform(size=(test_eeg_cls[cl].shape[0],128), low=-1, high=1)
 			noise_lst   = np.concatenate([test_noise, test_eeg_cls[cl]], axis=-1)
-
 			for idx, noise in enumerate(tqdm(noise_lst)):
 				X = mirrored_strategy.run(model.gen, args=(tf.expand_dims(noise, axis=0),))
 				X = cv2.cvtColor(tf.squeeze(X).numpy(), cv2.COLOR_RGB2BGR)
