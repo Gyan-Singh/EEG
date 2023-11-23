@@ -140,6 +140,7 @@ if __name__ == '__main__':
 	lr = 3e-4
 	with mirrored_strategy.scope():
 		model        = DCGAN()
+		print(model)
 		model_gopt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
 		model_copt   = Adam(learning_rate=lr, beta_1=0.2, beta_2=0.5)
 		ckpt         = tf.train.Checkpoint(step=tf.Variable(1), model=model, gopt=model_gopt, copt=model_copt)

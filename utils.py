@@ -32,14 +32,32 @@ style.use('seaborn')
 
 def preprocess_data(X, Y, P, resolution=128):
 	X = tf.squeeze(X, axis=-1)
+	print("x")
+	print(X)
 	max_val = tf.reduce_max(X)/2.0
+	print("max_val")
+	print(max_val)
 	X = (X - max_val) / max_val
+	print("x")
+	print(X)
 	X = tf.transpose(X, [1, 0])
+	print("x")
+	print(X)
 	X = tf.cast(X, dtype=tf.float32)
+	print("x")
+	print(X)
 	Y = tf.argmax(Y)
+	print("y")
+	print(Y)
 	I = tf.image.decode_jpeg(tf.io.read_file(P), channels=3)
+	print("i")
+	print(I)
 	I = tf.image.resize(I, (resolution, resolution))
+	print("I")
+	print(I)
 	I = (tf.cast( I, dtype=tf.float32 ) - 127.5) / 127.5
+	print("I")
+	print(I)
 
 	return X, Y, I
 
