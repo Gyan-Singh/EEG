@@ -72,11 +72,11 @@ if __name__ == '__main__':
 		test_path.append(np.random.choice(imgdict[idxtocls[np.argmax(Y)]], size=(1,) ,replace=True)[0])
 
 	print("trainx")
-	print(train_X)
+	print(train_X.shape)
 	print("trainy")
-	print(train_Y)
+	print(train_Y.shape)
 	print("trainp")
-	print(train_path)
+	print(train_path.shape)
 
 	train_batch = load_complete_data(train_X, train_Y, train_path, batch_size=batch_size)
 	test_batch  = load_complete_data(test_X, test_Y, test_path, batch_size=test_batch_size)
