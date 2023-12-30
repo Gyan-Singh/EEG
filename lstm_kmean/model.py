@@ -35,16 +35,22 @@ class TripleNet(Model):
 	def call(self, x):
 		for idx in range(self.enc_depth):
 			x = self.encoder[idx]( x )
-		# print(x.shape)
+		print("1st")
+		print(x.shape)
 		x = feat = self.flat( x )
-		# print(x.shape)
+		print("2st")
+		print(x.shape)
 		# x = feat = self.feat_layer( x )
 		# print(x.shape)
 		# x = self.feat_norm( x )
 		# x = self.cls_layer(x)
 		# x = self.w_2( self.w_1( x ) )
 		x = tf.nn.l2_normalize(x, axis=-1)
-
+		print("3st")
+		print(x.shape)
+		print(x)
+		print("4st")
+		print(feat)
 		return x, feat
 
 @tf.function
