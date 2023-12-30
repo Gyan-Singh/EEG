@@ -32,32 +32,14 @@ style.use('seaborn')
 
 def preprocess_data(X, Y, P, resolution=128):
 	X = tf.squeeze(X, axis=-1)
-	print("x")
-	print(X.shape)
 	max_val = tf.reduce_max(X)/2.0
-	print("max_val")
-	print(max_val.shape)
 	X = (X - max_val) / max_val
-	print("x")
-	print(X.shape)
 	X = tf.transpose(X, [1, 0])
-	print("x")
-	print(X.shape)
 	X = tf.cast(X, dtype=tf.float32)
-	print("x")
-	print(X.shape)
 	Y = tf.argmax(Y)
-	print("y")
-	print(Y.shape)
 	I = tf.image.decode_jpeg(tf.io.read_file(P), channels=3)
-	print("i")
-	print(I.shape)
 	I = tf.image.resize(I, (resolution, resolution))
-	print("I")
-	print(I.shape)
 	I = (tf.cast( I, dtype=tf.float32 ) - 127.5) / 127.5
-	print("I")
-	print(I.shape)
 
 	return X, Y, I
 
@@ -77,13 +59,13 @@ def show_batch_images(X, save_path, Y=None):
 	row = X.shape[0] // col
 	# print(X.shape[0], Y.shape)
 	for r in range(row):
-	    for c in range(col):
-	        plt.subplot2grid((row, col), (r, c), rowspan=1, colspan=1)
-	        plt.grid('off')
-	        plt.axis('off')
-	        if Y is not None:
-	        	plt.title('{}'.format(Y[r*col+c]))
-	        plt.imshow(X[r*col+c])
+		for c in range(col):
+			plt.subplot2grid((row, col), (r, c), rowspan=1, colspan=1)
+			plt.grid('off')
+			plt.axis('off')
+			if Y is not None:
+				plt.title('{}'.format(Y[r*col+c]))
+			plt.imshow(X[r*col+c])
 	plt.tight_layout()
 	plt.savefig(save_path)
 	plt.clf()
