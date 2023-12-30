@@ -79,10 +79,6 @@ if __name__ == '__main__':
 	latent_label = Y[:16]
 	print(X.shape, Y.shape, I.shape)
 
-	print("latent_label")
-	print(latent_label)
-	print(latent_label.shape)
-
 	gpus = tf.config.list_physical_devices('GPU')
 	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:0'], 
 		cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
@@ -105,7 +101,11 @@ if __name__ == '__main__':
 	triplenet_ckptman = tf.train.CheckpointManager(triplenet_ckpt, directory='lstm_kmean/experiments/best_ckpt', max_to_keep=5000)
 	triplenet_ckpt.restore(triplenet_ckptman.latest_checkpoint)
 	print('TripletNet restored from the latest checkpoint: {}'.format(triplenet_ckpt.step.numpy()))
+	print("1st"))
+	print(triplenet(X, training=False))
 	_, latent_Y = triplenet(X, training=False)
+	print("latent_Y")
+	print(latent_Y)
 
 	print('Extracting test eeg features:')
 	# test_eeg_features = np.array([np.squeeze(triplenet(E, training=False)[1].numpy()) for E, Y, X in tqdm(test_batch)])
@@ -122,8 +122,6 @@ if __name__ == '__main__':
 		else:
 			test_eeg_cls[Y].append(np.squeeze(triplenet(E, training=False)[1].numpy()))
 
-	print("test_eeg_cls")
-	print(test_eeg_cls)
 	
 	for _ in range(n_classes):
 		test_eeg_cls[_] = np.array(test_eeg_cls[_])
