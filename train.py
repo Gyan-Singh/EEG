@@ -101,7 +101,7 @@ if __name__ == '__main__':
 	triplenet_ckptman = tf.train.CheckpointManager(triplenet_ckpt, directory='lstm_kmean/experiments/best_ckpt', max_to_keep=5000)
 	triplenet_ckpt.restore(triplenet_ckptman.latest_checkpoint)
 	print('TripletNet restored from the latest checkpoint: {}'.format(triplenet_ckpt.step.numpy()))
-	print("1st"))
+	print("1st")
 	print(triplenet(X, training=False))
 	_, latent_Y = triplenet(X, training=False)
 	print("latent_Y")
