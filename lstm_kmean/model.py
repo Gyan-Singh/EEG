@@ -48,9 +48,8 @@ class TripleNet(Model):
 		x = tf.nn.l2_normalize(x, axis=-1)
 		print("3st")
 		print(x.shape)
-		print(x)
 		print("4st")
-		print(feat)
+		print(feat.shape)
 		return x, feat
 
 @tf.function

@@ -37,6 +37,7 @@ def preprocess_data(X, Y, P, resolution=128):
 	X = tf.transpose(X, [1, 0])
 	X = tf.cast(X, dtype=tf.float32)
 	Y = tf.argmax(Y)
+	print(P.shape)
 	I = tf.image.decode_jpeg(tf.io.read_file(P), channels=3)
 	I = tf.image.resize(I, (resolution, resolution))
 	I = (tf.cast( I, dtype=tf.float32 ) - 127.5) / 127.5
