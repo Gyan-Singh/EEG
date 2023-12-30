@@ -79,6 +79,10 @@ if __name__ == '__main__':
 	latent_label = Y[:16]
 	print(X.shape, Y.shape, I.shape)
 
+	print("latent_label")
+	print(latent_label)
+	print(latent_label.shape)
+
 	gpus = tf.config.list_physical_devices('GPU')
 	mirrored_strategy = tf.distribute.MirroredStrategy(devices=['/GPU:0'], 
 		cross_device_ops=tf.distribute.HierarchicalCopyAllReduce())
