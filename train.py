@@ -26,9 +26,7 @@ for idx, item in enumerate(natsorted(glob('data/images/train/*')), start=0):
 	clstoidx[clsname] = idx
 	idxtocls[idx] = clsname
 
-print(clsname)
-print(clstoidx)
-print(idxtocls)
+
 
 image_paths = natsorted(glob('data/images/train/*/*'))
 imgdict     = {}
@@ -39,7 +37,7 @@ for path in image_paths:
 	else:
 		imgdict[key] = [path]
 
-print(imgdict)
+
 
 # wandb.init(project='DCGAN_DiffAug_EDDisc_imagenet_128', entity="prajwal_15")
 
@@ -143,7 +141,7 @@ if __name__ == '__main__':
 
 	# print(ckpt.step.numpy())
 	START         = int(ckpt.step.numpy()) // len(train_batch) + 1
-	EPOCHS        = 1#670#66
+	EPOCHS        = 300#670#66
 	model_freq    = 355#178#355#178#200#40
 	t_visfreq     = 355#178#355#178#200#1500#40
 	latent        = tf.random.uniform(shape=(16, latent_dim), minval=-0.2, maxval=0.2)
