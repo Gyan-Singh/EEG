@@ -141,7 +141,7 @@ if __name__ == '__main__':
 
 	# print(ckpt.step.numpy())
 	START         = int(ckpt.step.numpy()) // len(train_batch) + 1
-	EPOCHS        = 300#670#66
+	EPOCHS        = 10#670#66
 	model_freq    = 355#178#355#178#200#40
 	t_visfreq     = 355#178#355#178#200#1500#40
 	latent        = tf.random.uniform(shape=(16, latent_dim), minval=-0.2, maxval=0.2)
